@@ -1,0 +1,161 @@
+Commands
+**************************************************************************************************
+# Find top 10 largest files on server
+find / -type f -exec du -Sh {} + 2>/dev/null | sort -rh | head -n 10
+
+# Kill all processes from a specific user (e.g., compromised site user)
+pkill -u username
+
+# Monitor top IPs hitting Apache
+awk '{print $1}' /var/log/apache2/access.log | sort | uniq -c | sort -nr | head
+
+# Check MySQL slow queries
+tail -f /var/lib/mysql/$(hostname)-slow.log
+
+**************************************************************************************************
+
+My Simple Space" WordPress plugin
+to check the site details like php version. size of directory
+ 
+**************************************************************************************************
+exclude folder from zip
+zip -r diet-insight.zip diet-insight -x "diet-insight/public/*"
+unzip diet-insight.zip -x "diet-insight/public/*" "diet-insight/dtlavleen_live.sql"
+**************************************************************************************************
+Rsync:
+rsync -avO manpreet@3.14.113.49:/var/www/html/* /usr/local/apache2.4.62/htdocs/
+rsync -avz -e "ssh" /home/username/mail/ root@destination-server-ip:/home/username/mail/
+**************************************************************************************************
+Redirection:
+RewriteRule ^/panchakarma-treatment-chandigarh https://santushtibylavleen.com/panchakarma-centre-chandigarh
+
+**************************************************************************************************
+IMAP sync: 
+imapsync --host1 mail.saudinofa.com.registermail.net --user1 t.alnory@saudinofa.com  --password1 'Snofa@123' --ssl1 --host2 mail.saudinofa.com --user2 t.alnory@saudinofa.com --password2 'SaudiNofA@123' --ssl2
+**************************************************************************************************
+download crt and private key from pfx
+openssl pkcs12 -in wmeagency.com.pfx -nocerts -out wmeagency.com.key
+openssl pkcs12 -in wmeagency.com.pfx -out wmeagency.com.cer -nodes 
+openssl rsa -in wmeagency.com.key -out wmeagency.com_pvt.key
+**************************************************************************************************
+Exclude folder from whm backup configuration
+nano /etc/cpbackup-exclude.conf
+add full path
+then run /usr/local/cpanel/bin/backup
+**************************************************************************************************
+https://assets.hostinger.com/content/tutorials/pdf/Docker-Cheat-Sheet.pdf?_gl=1*1uwelfp*_gcl_aw*R0NMLjE3MzgwNTYxNDQuQ2p3S0NBaUFuZUs4QmhBVkVpd0FveTJIWVFhYTc0cERlNVZJRThvdkdzTDVQSGlGNWFNQnc5OWo4YVJkZ2hJZVNmNkwzZ2hoWmZhUVBCb0NjTHdRQXZEX0J3RQ..*_gcl_au*MTc3MTc4NDU0Mi4xNzM4MDU2MDM3*_ga*NzQ0MTE5MTI4LjE3MzgwNTYwMzc.*_ga_73N1QWLEMH*MTczODA1NjAzNy4xLjEuMTczODA1NjI3Mi42MC4wLjIzNjM2MzYx&_ga=2.25328382.273528072.1738056038-744119128.1738056037&_gac=1.257125113.1738056038.CjwKCAiAneK8BhAVEiwAoy2HYQaa74pDe5VIE8ovGsL5PHiF5aMBw99j8aRdghIeSf6L3ghhZfaQPBoCcLwQAvD_BwE
+
+Install Wordpress on docker
+
+docker network create wordpress-network
+
+Mysql: docker run --name wordpressdb --network wordpress-network -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=wordpress -d mysql:5.7
+
+Wordpress: docker run --name wordpress --network wordpress-network -p 8080:80 -e WORDPRESS_DB_HOST=wordpressdb -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_PASSWORD=rootpassword -e WORDPRESS_DB_NAME=wordpress -d wordpress
+**************************************************************************************************
+Redirect from old url to new
+RewriteEngine on
+RewriteRule ^(.*)$ https://www.alpsco.in/ [R=permanent,L
+**************************************************************************************************
+
+find  facturly -type f -exec chmod 644 {} +
+
+find facturly -type d -exec chmod 755 {} +
+
+find public_html -type f -name ".htaccess" -exec rm -f {} \;
+
+egrep "^\[Thu Apr 24 12:5[7-9]" /var/log/apache2/error_log  (find logs with time)
+
+**************************************************************************************************
+journalctl --disk-usage
+du -sh /var/log/journal/*
+journalctl --vacuum-size=50M
+**************************************************************************************************
+ERR_TOO_MANY_REDIRECTS:
+Add this file in wp-config.php
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+    $_SERVER['HTTPS'] = 'on';
+**************************************************************************************************
+Disable password notification in wordpress
+add_filter( 'send_password_change_email', '__return_false' );
+add line in function.php file
+**************************************************************************************************
+directory privacy (restrict access to site) nginx
+1. apt-get install apache2-utils
+2. create user with sudo htpasswd -c /etc/nginx/.htpasswd user
+3. nano /etc/nginx/sites-available/
+4. add code in .conf
+
+  location / {
+        try_files $uri $uri/ =404;
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+    }
+
+check conf file and site.
+
+**************************************************************************************************
+AWS-CLI
+1. check status of using AWS-ID:
+aws sts get-caller-identity
+
+2. list S3 bucket
+   aws s3 ls
+*  Create a new bucket:
+   aws s3 mb s3://your-bucket-name
+** Upload a file to S3:
+   aws s3 cp yourfile.txt s3://your-bucket-name/
+*** Delete bucket
+    aws s3 rb s3://your-bucket-name --force
+
+3. Launch AWS instance
+Create: aws ec2 run-instances --image-id ami-0e35ddab05955cf57 --count 1 --instance-type t2.micro --key-name rajputkey --security-groups default
+List: aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId,State.Name,Tags[*].Value]" --output table
+Delete: aws ec2 terminate-instances --instance-ids i-0abcdef1234567890
+
+4. aws iam create-user --user-name newuser
+aws iam create-user --user-name newuser
+
+**************************************************************************************************
+Auto Scaling Based on CPU Utilization 
+1. install stress in ubuntu
+sudo apt update
+sudo apt install stress -y
+2. Run stress to increase CPU load
+stress --cpu 4 --timeout 300
+
+**************************************************************************************************
+Add multiple php in ubuntu nginx
+
+https://medium.com/@krishjaiswal7562/how-to-install-multiple-php-versions-with-nginx-on-ubuntu-753bd54e649
+
+**************************************************************************************************
+exim commands: 
+exim -bp: list messages
+exim -bpc: count list of messages
+exim -bp | awk '{print $3}' | xargs exim -Mrm
+
+# exim -bpc 
+**************************************************************************************************
+find the filesize in to truncate
+
+find /home -type f -name "*.log" -size +2G -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+
+find /home -type f -name "*.zip" -size +100M -exec ls -lh {} \;
+
+**************************************************************************************************
+convert docker container into images with backup data. 
+docker commit <container_name> <image_name>:manualbackup
+docker save -o <image_name>_manualbackup.tar <image_name>:manualbackup
+
+restore
+docker load -i facturly-db-backup.tar 
+docker run -d <options> facturly-db-backup:latest
+
+manually backup of code in ubuntu and also export.sql file from phpmyadmin
+**************************************************************************************************
+sed -i 's#https://www.dr-ambrosius24.de/mycoach/#https://vanixx.de/stage/mycoach/#g' dump20251110.sql
+******************************************************************************************************
+Extract first colum from file
+cut -d ':' -f1 /etc/passwd
+******************************************************************************************************
