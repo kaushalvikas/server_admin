@@ -1,0 +1,286 @@
+# Redirect http to https
+``` 
+RewriteEngine On
+
+RewriteCond %{HTTPS} off
+
+RewriteRule (.*) https://alefi.netmente.com/ [R=301,L]
+
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^techoptimus\.com$ [NC]
+RewriteRule ^(.*)$ https://www.techoptimus.com/$1 [L,R=301]
+
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+<IfModule mod_rewrite.c>
+ RewriteEngine On
+ RewriteCond %{HTTPS} off
+ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+```
+
+# Redirect https to http
+```
+RewriteEngine On
+
+RewriteCond %{HTTPS} on
+
+RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI}
+
+```
+
+-------------------------------------------------------------
+
+# Redirect www to non-www
+
+```
+RewriteCond %{HTTP_HOST} www.saudinofa.com
+
+RewriteRule (.*) https://saudinofa.com/$1 [R=301,L]
+
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.isuv\.de$ [NC]
+RewriteRule ^(.*)$ https://isuv.de%{REQUEST_URI} [L,R=301]
+
+```
+
+# Redirect non-www to www
+```
+RewriteCond %{HTTP_HOST} ^domain.com$ [NC]
+
+RewriteRule (.*) https://www.ashfoodservices.com//$1 [R=301,L] 
+```
+
+
+-------------------------------------------------------------
+
+# Adding trailing slash
+```
+<IfModule mod_rewrite.c>
+ RewriteCond %{REQUEST_URI} /+[^\.]+$
+ RewriteRule ^(.+[^/])$ %{REQUEST_URI}/ [R=301,L]
+</IfModule>
+```
+
+# Removing trailing slash
+```
+<IfModule mod_rewrite.c>
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+</IfModule>
+```
+
+-------------------------------------------------------------
+
+# Remove .php extension from URL
+
+```
+RewriteRule ^(.+)\.php$ /$1 [R,L]
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*?)/?$ /$1.php [NC,END]
+
+```
+
+-------------------------------------------------------------
+
+# Remove .html extension from URL
+
+```
+RewriteRule ^(.+)\.html$ /$1 [R,L]
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*?)/?$ /$1.html [NC,END]
+******************************************
+RewriteEngine on
+
+RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
+RewriteRule ^ /%1 [NC,L,R]
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^ %{REQUEST_URI}.html [NC,L]
+
+```
+**************************************************************************
+
+# redirect Url to live site expect old/sublinks. all other url reditect to live site. 
+
+RewriteEngine on
+RewriteCond %{REQUEST_URI} !^/oldsite(/.*)?$
+RewriteCond %{HTTPS} off [OR]
+RewriteRule (.*) https://thesnackattack.ca/ [R=301,L]
+-------------------------------------------------------------
+
+RewriteEngine on
+RewriteRule ^(.*)$ https://www.alpsco.in/ [R=permanent,L]
+
+
+
+# redirect from one domain to another
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^harbathwal.com$ [OR]
+  RewriteCond %{HTTP_HOST} ^www.harbathwal.com$
+  RewriteRule (.*)$ https://harbathwalrealty.com/$1 [R=301,L]
+</IfModule>
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^(.*)$ "https\:\/\/harbathwalrealty\.com\/" [R=301,L]
+-------------------------------------------------------------
+
+RewriteRule ^/blog/buy-plot-in-mohali-the-residency/ https://nadarproperties.com/blog/buy-plot-in-mohali-mcc-residency/
+
+------------------------------------------------------------
+reloading issue in website. 
+add file in .htaccess
+and allowoverwrite all on /etc/apache/apache.conf
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . /index.html [L]
+</IfModule>
+
+------------------------------------------------------------
+redirect url to public
+***********************
+RewriteEngine On 
+RewriteRule ^$ public/index.php [L]
+RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+*****************************
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+-----------------------------------------------------------
+cros error: 
+<IfModule mod_headers.c>
+<FilesMatch ".(eot|otf|ttf|woff|woff2)">
+    Header always set Access-Control-Allow-Origin "*"
+</FilesMatch>
+</IfModule>
+----------------------------------------------------------
+<script>
+window.location.replace("https://www.roffers.co.uk/");
+</script>
+
+
+Redirect: RewriteRule ^/demo/product-category/exotic-chocolates demo/product-category/chocolates
+
+
+***********************************************************
+redirect to public
+RewriteEngine on
+RewriteCond %{REQUEST_URI} !^public
+RewriteRule ^(.*)$ public/$1 [L]
+************************************************************
+function.php
+for remove http to https google api. 
+function replace_google_fonts_url($url) {
+    if (strpos($url, 'fonts.googleapis.com/css') !== false) {
+        $url = str_replace('http://', 'https://', $url);
+    }
+    return $url;
+}
+add_filter('style_loader_src', 'replace_google_fonts_url');
+-------------------------------------------------------------------
+Nginx server redirect from old url to new one
+server {
+# Permanent redirect to an individual page
+rewrite ^/old-url$ http://www.domain.com/new-url permanent;
+}
+
+rewrite ^/hcs$ https://eduphore.com/hcs-coaching-chandigarh permanent;
+rewrite ^/pcs$ https://eduphore.com/pcs-coaching-chandigarh permanent;
+
+**************************************************************************************************************
+http://rheumera.com/chiarthritis this url need to redirect into https://sites.google.com/rheumera.com/home
+
+using this redirection
+
+RewriteEngine On
+RewriteRule ^/chiarthritis https://sites.google.com/rheumera.com/home
+
+**************************************************************************************************************
+# Redirect /menu/ to /menu (remove trailing slash for pages)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [R=301,L]
+**************************************************************************************************************
+Angular issue admin page not able to reload gives 404 error
+RewriteEngine On
+# If an existing asset or directory is requested go to it as it is
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+RewriteRule ^ - [L]
+
+# If the requested resource doesn't exist, use index.html
+RewriteRule ^ /index.html
+
+
+RewriteRule ^/wp-login.php https://matchvue.com/login
+
+
+RewriteEngine On
+RewriteRule ^$ https://aimautoglass.com [L,R=301]
+
+
+https://nadarproperties.com/location to https://maps.app.goo.gl/LPSVuELtZ9PMwXQ58
+
+**************************************************************************************************************
+404 found in laravel while making .htaccess in root folder. 
+create server.php file and create .htaccess copy/paste this code. 
+
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{REQUEST_FILENAME} -d [OR]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ ^$1 [N]
+
+    RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
+    RewriteRule ^(.*)$ public/$1
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ server.php
+</IfModule>
+
+code server.php
+
+<?php
+
+/**
+ * Laravel - A PHP Framework For Web Artisans
+ *
+ * @package  Laravel
+ * @author   Taylor Otwell <taylor@laravel.com>
+ */
+
+$uri = urldecode(
+    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
+);
+
+// This file allows us to emulate Apache's "mod_rewrite" functionality from the built-in PHP web server.
+// This provides a convenient way to test a Laravel application without having installed a "real" web server software here.
+if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
+    return false;
+}
+
+require_once __DIR__.'/public/index.php';
+
+***************************************************************************************************
